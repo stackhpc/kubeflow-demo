@@ -1,5 +1,4 @@
 
-
 variable "cluster_name" {
   type = string
   default = "k8sy-perry"
@@ -76,11 +75,13 @@ resource "openstack_containerinfra_clustertemplate_v1" "kubernetes_template" {
   docker_storage_driver = "overlay2"
   network_driver        = "flannel"
   server_type           = "vm"
-  external_network_id   = "ilab-215"
+  external_network_id   = "${var.external_network_name}"
   master_lb_enabled     = false
+  public                = true
   floating_ip_enabled   = false
-  fixed_network = "${openstack_networking_network_v2.cluster_network.id}"
-  fixed_subnet = "${openstack_networking_subnet_v2.cluster_subnet.id}"
+  dns_nameserver        = "8.8.8.8"
+  fixed_network         = "${openstack_networking_network_v2.cluster_network.id}"
+  fixed_subnet          = "${openstack_networking_subnet_v2.cluster_subnet.id}"
   labels = {
     cgroup_driver="cgroupfs"
     prometheus_monitoring="true"
