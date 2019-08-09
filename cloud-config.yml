@@ -1,0 +1,15 @@
+---
+
+- name: Create clouds.yaml file
+  hosts: localhost
+  roles:
+    - role: "openstack_openrc"
+  vars:
+    openrc_file_dest: /tmp/sdfsdf-openrc
+    openrc_os_password: "{{ lookup('env', 'OS_PASSWORD') }}"
+    openrc_os_username: "{{ lookup('env', 'OS_USERNAME') }}"
+    openrc_os_tenant_name: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
+    openrc_os_auth_type: password
+    openrc_os_auth_url: "{{ lookup('env', 'OS_AUTH_URL') }}"
+    openrc_region_name: "{{ lookup('env', 'OS_REGION_NAME') }}"
+    openrc_os_domain_name: "{{ lookup('env', 'OS_PROJECT_DOMAIN_NAME') }}"

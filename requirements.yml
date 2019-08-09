@@ -1,0 +1,5 @@
+---
+
+- src: git+https://github.com/openstack/openstack-ansible-openstack_openrc
+  name: openstack_openrc
+

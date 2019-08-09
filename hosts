@@ -1,0 +1,1 @@
+login ansible_host=128.232.224.70 ansible_user=centos cluster_name=k8sy-perry

@@ -1,0 +1,51 @@
+---
+
+- name: configure manila
+  hosts: login
+  vars:
+    prefix: ~/cloud-provider-openstack/examples/manila-provisioner
+  tasks:
+    - name: clone cloud provider openstack
+      git:
+        repo: "{{ cloud_provider_openstack_repo }}"
+        version: "{{ cloud_provider_openstack_version }}"
+        dest: ~/cloud-provider-openstack
+
+    - name: determine whether secret exists
+      shell: ~/.local/bin/kubectl get secret | grep my-manila-secrets
+      register: result
+      failed_when: false
+      changed_when: false
+
+    - block:
+       - name: generate secrets
+         shell: >-
+           {{ prefix }}/generate-secrets.sh -n my-manila-secrets | {{ prefix }}/filter-secrets.sh > ~/secrets.yaml
+         environment: "{{ openstack_auth_env }}"
+
+       - name: upload secrets to k8s
+         shell: ~/.local/bin/kubectl create -f ~/secrets.yaml
+      when: result.rc != 0
+
+    #TODO: determine if contents changed
+    - name: base-deploy
+      shell: >-
+        ./base-deploy.sh
+      environment:
+        PATH: "{{ ansible_env.PATH }}:~/.local/bin/"
+      args:
+        chdir: "{{ prefix }}/cephfs"
+      register: result
+      changed_when: "'AlreadyExists' not in result.stderr" 
+      failed_when: "result.rc != 0 and 'AlreadyExists' not in result.stderr"
+
+    - name: vol-deploy-ond
+      shell: >-
+        ./vol-deploy-ond.sh
+      args:
+        chdir: "{{ prefix }}/cephfs/user-deploy"
+      environment:
+        PATH: "{{ ansible_env.PATH }}:~/.local/bin/"
+      register: result
+      changed_when: "'AlreadyExists' not in result.stderr" 
+      failed_when: "result.rc != 0 and 'AlreadyExists' not in result.stderr"

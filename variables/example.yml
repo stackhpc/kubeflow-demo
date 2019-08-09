@@ -1,0 +1,23 @@
+---
+
+kfctl_version: v0.5.1
+
+homedir: "{{ ansible_env.HOME }}"
+kfctl_archive: kfctl_{{ kfctl_version }}_linux.tar.gz
+
+archives_dir: "~/.archives"
+
+
+cloud_provider_openstack_repo: https://github.com/jovial/cloud-provider-openstack
+cloud_provider_openstack_version: iris
+
+openstack_auth_env:
+  OS_PROJECT_DOMAIN_NAME: "{{ lookup('env', 'OS_PROJECT_DOMAIN_NAME') }}"
+  OS_USER_DOMAIN_NAME: "{{ lookup('env', 'OS_USER_DOMAIN_NAME') }}"
+  OS_PROJECT_NAME: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
+  OS_USERNAME: "{{ lookup('env', 'OS_USERNAME') }}"
+  OS_PASSWORD: "{{ lookup('env', 'OS_PASSWORD') }}"
+  OS_AUTH_URL: "{{ lookup('env', 'OS_AUTH_URL') }}"
+  OS_INTERFACE: "{{ lookup('env', 'OS_INTERFACE') }}"
+  OS_IDENTITY_API_VERSION: "{{ lookup('env', 'OS_IDENTITY_API_VERSION') }}"
+  OS_CACERT: "{{ lookup('env', 'OS_CACERT') }}"
