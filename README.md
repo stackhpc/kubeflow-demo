@@ -16,14 +16,15 @@ Install terraform
 -----------------
 
 - install go
-- go get github.com/hashicorp/terraform
-- go get github.com/terraform-providers/terraform-provider-template
+- `go get github.com/hashicorp/terraform`
+- `go get github.com/terraform-providers/terraform-provider-template`
 
 Create cluster
 --------------
-
+```
 ./terraform init
 ./terraform apply
+```
 
 Edit variable overrides
 -----------------------
