@@ -14,6 +14,7 @@ cloud_provider_openstack_version: iris
 openstack_auth_env:
   OS_PROJECT_DOMAIN_NAME: "{{ lookup('env', 'OS_PROJECT_DOMAIN_NAME') }}"
   OS_USER_DOMAIN_NAME: "{{ lookup('env', 'OS_USER_DOMAIN_NAME') }}"
+  OS_REGION_NAME: "{{ lookup('env', 'OS_REGION_NAME') }}"
   OS_PROJECT_NAME: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
   OS_USERNAME: "{{ lookup('env', 'OS_USERNAME') }}"
   OS_PASSWORD: "{{ lookup('env', 'OS_PASSWORD') }}"

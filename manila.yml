@@ -12,7 +12,7 @@
         dest: ~/cloud-provider-openstack
 
     - name: determine whether secret exists
-      shell: ~/.local/bin/kubectl get secret | grep my-manila-secrets
+      shell: ~/.local/bin/kubectl get secret | grep manila-secrets
       register: result
       failed_when: false
       changed_when: false
@@ -20,7 +20,7 @@
     - block:
        - name: generate secrets
          shell: >-
-           {{ prefix }}/generate-secrets.sh -n my-manila-secrets | {{ prefix }}/filter-secrets.sh > ~/secrets.yaml
+           {{ prefix }}/generate-secrets.sh -n manila-secrets | {{ prefix }}/filter-secrets.sh > ~/secrets.yaml
          environment: "{{ openstack_auth_env }}"
 
        - name: upload secrets to k8s
@@ -36,7 +36,7 @@
       args:
         chdir: "{{ prefix }}/cephfs"
       register: result
-      changed_when: "'AlreadyExists' not in result.stderr" 
+      changed_when: "'AlreadyExists' not in result.stderr"
       failed_when: "result.rc != 0 and 'AlreadyExists' not in result.stderr"
 
     - name: vol-deploy-ond
