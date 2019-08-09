@@ -1,12 +1,16 @@
 README
 ######
 
+```
 ansible-galaxy install -r requirements.yml -p roles/
+```
 
 We assume you are clouds.yml, if not you can create one using:
 
+```
 . ~/path-to-openrc
 ansible-playbook cloud-config.yml
+```
 
 Install terraform
 -----------------
