@@ -60,7 +60,7 @@ resource "openstack_networking_router_interface_v2" "router_interface_1" {
 # alternatively, add the cumulus_storage subnet to the router, but we'd need to
 # adjust the return route on the storage nodes
 resource "openstack_networking_router_route_v2" "router_route_1" {
-  #depends_on       = ["openstack_networking_router_interface_v2.router_interface_1"]
+  depends_on       = ["openstack_networking_router_interface_v2.router_interface_1"]
   router_id        = "${openstack_networking_router_v2.cluster_router.id}"
   destination_cidr = "10.206.0.0/16"
   next_hop         = "10.215.0.3"
@@ -70,6 +70,8 @@ resource "openstack_containerinfra_clustertemplate_v1" "kubernetes_template" {
   name                  = "k8s-1.1.4.3-1"
   image                 = "FedoraAtomic29-20190429"
   coe                   = "kubernetes"
+  docker_volume_size    = 100
+  volume_driver         = "cinder"
   flavor                = "general.v1.small"
   master_flavor         = "general.v1.tiny"
   docker_storage_driver = "overlay2"
@@ -87,6 +89,7 @@ resource "openstack_containerinfra_clustertemplate_v1" "kubernetes_template" {
     prometheus_monitoring="true"
     kube_tag="v1.14.3"
     cloud_provider_tag="v1.14.0"
+    docker_volume_type="rbd"
   }
 }
 
