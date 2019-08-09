@@ -1,5 +1,5 @@
-README
-######
+# README
+
 
 ```
 ansible-galaxy install -r requirements.yml -p roles/
@@ -29,7 +29,7 @@ Create cluster
 Edit variable overrides
 -----------------------
 
-See variables/example.yml
+See `variables/example.yml`
 
 Configure the login node
 ------------------------
