@@ -35,7 +35,7 @@ resource "openstack_containerinfra_clustertemplate_v1" "kubernetes_template" {
   flavor                = "C6420-Xeon6148-192-bios"
   master_flavor         = "C6420-Xeon6148-192-bios"
   docker_storage_driver = "overlay2"
-  network_driver        = "flannel"
+  network_driver        = "calico"
   server_type           = "vm"
   external_network_id   = "${var.external_network_name}"
   master_lb_enabled     = false
