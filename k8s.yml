@@ -1,0 +1,13 @@
+- name: configure login node
+  hosts: localhost
+  gather_facts: no
+  roles:
+  - role: configure-k8s
+    enable_kubeflow: true
+    enable_helm: true
+    enable_manila: false
+    enable_nfs: true
+    enable_ingress: true
+    enable_monitoring: true
+    ingress_node: k8sy-perry-ljbdnfdar6hf-minion-0
+  

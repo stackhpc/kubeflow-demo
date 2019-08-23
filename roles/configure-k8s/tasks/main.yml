@@ -1,0 +1,14 @@
+- import_tasks: manila.yml
+  when: enable_manila | bool
+
+- import_tasks: helm.yml
+  when: enable_helm | bool
+
+- import_tasks: nfs.yml
+  when: enable_nfs | bool
+
+- import_tasks: kubeflow.yml
+  when: enable_kubeflow | bool
+
+- import_tasks: monitoring.yml
+  when: enable_monitoring | bool

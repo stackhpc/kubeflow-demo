@@ -31,33 +31,9 @@ Edit variable overrides
 
 See `variables/example.yml`
 
-Configure the login node
-------------------------
+Run the playbook
+----------------
 
-You are required to do this before you run any other playbooks.
+ansible-playbook k8s.yml -e @variables/example.yml
 
-```
-ansible-playbook host-configure.yml -i hosts -e @variables/example.yml
-```
-
-It will install various tools. It should be possible to use the openstack client
-on the login node:
-
-```
-. ~/venv-openstack/bin/active
-openstack coe cluster list
-```
-
-Configure volume provider
--------------------------
-
-```
-ansible-playbook manila.yml -i hosts -e @variables/example.yml
-```
-
-Deploy Kubeflow
----------------
-
-```
-ansible-playbook kubeflow.yml -i hosts -e @variables/example.yml
-```
+``

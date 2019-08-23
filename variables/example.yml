@@ -7,7 +7,6 @@ kfctl_archive: kfctl_{{ kfctl_version }}_linux.tar.gz
 
 archives_dir: "~/.archives"
 
-
 cloud_provider_openstack_repo: https://github.com/jovial/cloud-provider-openstack
 cloud_provider_openstack_version: iris
 
@@ -22,3 +21,11 @@ openstack_auth_env:
   OS_INTERFACE: "{{ lookup('env', 'OS_INTERFACE') }}"
   OS_IDENTITY_API_VERSION: "{{ lookup('env', 'OS_IDENTITY_API_VERSION') }}"
   OS_CACERT: "{{ lookup('env', 'OS_CACERT') }}"
+
+# Assume existing NFS server
+
+nfs_server: 10.145.0.26
+nfs_server_export: /srv
+
+helm_version: v2.14.3
+helm_archive: helm-{{ helm_version }}-linux-amd64.tar.gz

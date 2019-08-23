@@ -1,0 +1,27 @@
+---
+
+
+- name: determine if nfs-client storage class exists
+  shell: |
+    ~/.local/bin/kubectl get storageclass | grep nfs-client
+  register: storage_class
+  failed_when: false
+  changed_when: false
+
+- name: setup nfs client provider
+  shell: |
+    helm install stable/nfs-client-provisioner --set nfs.server={{ nfs_server_ipv4 }} --set nfs.path={{ nfs_server_export }}
+  when: storage_class.rc != 0
+
+- name: determine if nfs-client is default storage class
+  shell: |
+    ~/.local/bin/kubectl get storageclass | grep nfs-client | grep '(default)'
+  register: default_storage_class
+  failed_when: false
+  changed_when: false
+
+- name: set nfs-client as default storage class
+  shell: |
+    kubectl patch storageclass nfs-client -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+  when: default_storage_class.rc != 0
+

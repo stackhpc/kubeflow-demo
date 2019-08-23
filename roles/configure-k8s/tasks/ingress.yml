@@ -1,0 +1,11 @@
+---
+- name: copy ingress template to the host
+  copy:
+    src: ingress-traefik.yml
+    dest: /tmp/ingress-traefik.yml
+
+- name: install ingress
+  command: kubecl apply -f /tmp/ingress-traefik.yml
+
+- name: label a minion as an ingress node
+  command: kubectl label nodes {{ ingress_node }} role=ingress

@@ -1,0 +1,32 @@
+---
+
+- name: determine if kubeflow is installed
+  shell: >-
+    ~/.local/bin/kubectl get pods -A | grep tiller
+  register: helm_installed
+  failed_when: false
+  changed_when: false
+
+- name: fetch helm
+  get_url:
+    url: https://get.helm.sh/{{ helm_archive }}
+    dest: "{{ archives_dir }}/{{ helm_archive }}"
+
+- name: uncompress helm
+  unarchive:
+    src: "{{ archives_dir }}/{{ helm_archive }}"
+    remote_src: true
+    mode: u+rx
+    dest: "~/.local/bin/"
+
+- name: install helm
+  shell: |
+      set -eu
+      EMAIL=default@stackhpc.com
+      kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$EMAIL
+      kubectl create serviceaccount tiller --namespace=kube-system
+      kubectl create clusterrolebinding tiller --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+      helm init --service-account tiller --upgrade
+      kubectl --namespace=kube-system patch deployment tiller-deploy --type=json \
+            --patch='[{"op": "add", "path": "/spec/template/spec/containers/0/command", "value": ["/tiller", "--listen=localhost:44134"]}]'
+  when: helm_installed.rc != 0
