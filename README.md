@@ -12,6 +12,17 @@ We assume you are clouds.yml, if not you can create one using:
 ansible-playbook cloud-config.yml
 ```
 
+Upload Fedora Atomic image
+--------------------------
+
+Support for Fedora Atomic 29 on Stein release (8.0.0) is broken. Hence we use
+Fedora Atomic 27 for now. The newer version will be supported on the next Stein
+release (8.1.0) where fixes have been backported from the master branch.
+
+```
+./upload-image.sh
+```
+
 Install terraform
 -----------------
 
@@ -39,24 +50,16 @@ ansible-playbook k8s.yml -e @variables/example.yml
 
 ```
 
-# Manully fixups
-
-node exporter broken
----------------------
+Forward port
+------------
 
 ```
-[fedora@k8sy-perry-ljbdnfdar6hf-master-0 ~]$ cd /srv/magnum/kubernetes/monitoring/
+./port-forward.sh
 
-[fedora@k8sy-perry-ljbdnfdar6hf-master-0 ~]kubectl delete -f nodeExporter.yaml
-
-[(os-venv) [stackhpc@seed local]$ ~]helm install --name monitoring stable/prometheus-node-exporter --namespace monitoring
 ```
 
-grafana unconfigued
---------------------
+Then navigate to port 3000 to view the grafana dashboard.
 
-- manually add prometheus datasource using port from `kubectl get svc`
-- manually import https://grafana.net/api/dashboards/1621/revisions/1/download"
 
 mnist example
 -------------
