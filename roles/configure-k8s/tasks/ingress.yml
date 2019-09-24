@@ -1,4 +1,7 @@
 ---
+- name: fix ingress image
+  command: kubectl set image ds/ingress-traefik ingress-traefik-backend=docker.io/traefik:v1.7.17 -n kube-system
+
 - name: copy ingress template to the host
   copy:
     src: ingress-ambassador.yml
