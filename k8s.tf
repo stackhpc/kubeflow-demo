@@ -30,6 +30,7 @@ provider "openstack" {
 
 resource "openstack_containerinfra_clustertemplate_v1" "kubernetes_template" {
   name                  = "k8s"
+  #image                 = "FedoraAtomic29-20190708"
   image                 = "Fedora-Atomic-27-20180419.0.x86_64"
   coe                   = "kubernetes"
   flavor                = "C6420-Xeon6148-192"

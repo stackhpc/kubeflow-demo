@@ -4,7 +4,7 @@ metadata:
   name: ambassador-ingress
   namespace: kubeflow
   annotations:
-    kubernetes.io/ingress.class: "traefik"
+    kubernetes.io/ingress.class: "nginx"
 spec:
     rules:
       - host: ""

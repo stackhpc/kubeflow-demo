@@ -1,11 +1,17 @@
 ---
 - name: copy ingress template to the host
   copy:
-    src: ingress-traefik.yml
-    dest: /tmp/ingress-traefik.yml
+    src: ingress-ambassador.yml
+    dest: /tmp/ingress-ambassador.yml
 
 - name: install ingress
-  command: kubecl apply -f /tmp/ingress-traefik.yml
+  command: kubectl apply -f /tmp/ingress-ambassador.yml
+
+- name: get ingress node
+  command: kubectl get nodes -o name
+  register: ingress_nodes
 
 - name: label a minion as an ingress node
-  command: kubectl label nodes {{ ingress_node }} role=ingress
+  command: kubectl label {{ item }} role=ingress --overwrite
+  with_items: "{{ ingress_nodes }}"
+  when: ingress_node in item

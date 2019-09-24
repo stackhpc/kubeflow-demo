@@ -24,8 +24,10 @@ openstack_auth_env:
 
 # Assume existing NFS server
 
-nfs_server: 10.145.0.26
+nfs_server_ipv4: 10.145.0.26
 nfs_server_export: /srv
 
 helm_version: v2.14.3
 helm_archive: helm-{{ helm_version }}-linux-amd64.tar.gz
+
+ingress_node: minion-0

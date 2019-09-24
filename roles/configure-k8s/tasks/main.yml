@@ -1,3 +1,4 @@
+---
 - import_tasks: manila.yml
   when: enable_manila | bool
 
@@ -10,5 +11,5 @@
 - import_tasks: kubeflow.yml
   when: enable_kubeflow | bool
 
-- import_tasks: monitoring.yml
-  when: enable_monitoring | bool
+- import_tasks: ingress.yml
+  when: enable_ingress | bool

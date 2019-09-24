@@ -85,3 +85,6 @@ spec:
 
 ```
 
+ingress
+
+kubectl set image ds/ingress-traefik ingress-traefik-backend=docker.io/traefik:v1.7.17 -n kube-system
