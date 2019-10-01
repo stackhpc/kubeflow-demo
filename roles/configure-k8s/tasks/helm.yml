@@ -12,27 +12,5 @@
     mode: u+rx
     dest: "~/.local/bin/"
 
-- name: determine if tiller is installed
-  shell: >-
-    ~/.local/bin/kubectl get pods -n kube-system | grep tiller
-  register: tiller_installed
-  failed_when: false
-  changed_when: false
-
-- name: copy ingress template to the host
-  copy:
-    src: tiller-rbac.yml
-    dest: /tmp/tiller-rbac.yml
-  when: tiller_installed.rc != 0
-
-- name: install tiller rbac
-  command: kubectl apply -f /tmp/tiller-rbac.yml
-  when: tiller_installed.rc != 0
-
-- name: install helm
-  shell: |
-      set -eu
-      helm init --service-account tiller --wait
-      kubectl --namespace=kube-system patch deployment tiller-deploy --type=json \
-            --patch='[{"op": "add", "path": "/spec/template/spec/containers/0/command", "value": ["/tiller", "--listen=localhost:44134"]}]'
-  when: tiller_installed.rc != 0
+- name: initialise tiller
+  command: helm init --client-only

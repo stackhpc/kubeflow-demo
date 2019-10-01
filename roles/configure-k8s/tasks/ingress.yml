@@ -2,19 +2,30 @@
 - name: fix ingress image
   command: kubectl set image ds/ingress-traefik ingress-traefik-backend=docker.io/traefik:v1.7.17 -n kube-system
 
-- name: copy ingress template to the host
-  copy:
-    src: ingress-ambassador.yml
-    dest: /tmp/ingress-ambassador.yml
-
-- name: install ingress
-  command: kubectl apply -f /tmp/ingress-ambassador.yml
-
 - name: get ingress node
-  command: kubectl get nodes -o name
+  shell: kubectl get nodes -o name | grep {{ ingress_node }}
   register: ingress_nodes
 
+- name: set ingress node names as fact
+  set_fact:
+    ingress_node_name: "{{ ingress_nodes.stdout_lines | first }}"
+
+- name: get node ip
+  shell: kubectl describe {{ ingress_node_name }} | grep -i InternalIP | awk '{print $2}'
+  register: node_ip_raw
+
+- name: set ingress node ipv4 as fact
+  set_fact:
+    ingress_ipv4: "{{ node_ip_raw.stdout }}"
+
 - name: label a minion as an ingress node
-  command: kubectl label {{ item }} role=ingress --overwrite
-  with_items: "{{ ingress_nodes }}"
-  when: ingress_node in item
+  command: kubectl label {{ ingress_node_name }} role=ingress --overwrite
+
+- name: copy ingress template to the host
+  template:
+    src: ingress.yml.j2
+    dest: /tmp/ingress.yml
+
+- name: install ingress
+  command: kubectl apply -f /tmp/ingress.yml
+

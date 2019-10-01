@@ -1,7 +1,7 @@
 
 variable "cluster_name" {
   type = string
-  default = "k8sy-perry"
+  default = "k8s"
 }
 
 variable "external_network_name" {
@@ -36,7 +36,7 @@ resource "openstack_containerinfra_clustertemplate_v1" "kubernetes_template" {
   flavor                = "C6420-Xeon6148-192"
   master_flavor         = "C6420-Xeon6148-192"
   docker_storage_driver = "overlay2"
-  network_driver        = "calico"
+  network_driver        = "flannel"
   server_type           = "vm"
   external_network_id   = "${var.external_network_name}"
   fixed_network         = "${var.fixed_network_name}"
@@ -56,6 +56,7 @@ resource "openstack_containerinfra_cluster_v1" "cluster" {
     cgroup_driver="cgroupfs"
     ingress_controller="traefik"
     tiller_enabled="true"
+    tiller_tag="v2.14.3"
     monitoring_enabled="true"
     kube_tag="v1.14.6"
     cloud_provider_tag="v1.14.0"

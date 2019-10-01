@@ -45,6 +45,14 @@ See `variables/example.yml`
 Run the playbook
 ----------------
 
+For the playbook to be able to use helm,
+
+```
+source magnum-tiller.sh
+```
+
+Then run,
+
 ```
 ansible-playbook k8s.yml -e @variables/example.yml
 
@@ -85,6 +93,14 @@ spec:
 
 ```
 
-ingress
+monitoring ingress
+------------------
 
-kubectl set image ds/ingress-traefik ingress-traefik-backend=docker.io/traefik:v1.7.17 -n kube-system
+```
+kubectl edit cm/prometheus-operator-grafana -n monitoring
+```
+Then put in:
+```
+[server]
+root_url = %(protocol)s://%(domain)s:%(http_port)s/grafana/
+```
