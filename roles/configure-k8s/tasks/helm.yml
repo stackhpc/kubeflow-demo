@@ -1,0 +1,16 @@
+---
+
+- name: fetch helm
+  get_url:
+    url: https://get.helm.sh/{{ helm_archive }}
+    dest: "{{ archives_dir }}/{{ helm_archive }}"
+
+- name: uncompress helm
+  unarchive:
+    src: "{{ archives_dir }}/{{ helm_archive }}"
+    remote_src: true
+    mode: u+rx
+    dest: "~/.local/bin/"
+
+- name: initialise tiller
+  command: helm init --client-only
