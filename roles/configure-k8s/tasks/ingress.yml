@@ -1,6 +1,7 @@
 ---
 - name: fix ingress image
   command: kubectl set image ds/ingress-traefik ingress-traefik-backend=docker.io/traefik:v1.7.17 -n kube-system
+  when: ingress == 'traefik'
 
 - name: get ingress node
   shell: kubectl get nodes -o name | grep {{ ingress_node }}
@@ -11,7 +12,7 @@
     ingress_node_name: "{{ ingress_nodes.stdout_lines | first }}"
 
 - name: get node ip
-  shell: kubectl describe {{ ingress_node_name }} | grep -i InternalIP | awk '{print $2}'
+  shell: kubectl describe {{ ingress_node_name }} | grep -i {{ ip_type | default('ExternalIP') }} | awk '{print $2}'
   register: node_ip_raw
 
 - name: set ingress node ipv4 as fact
@@ -23,9 +24,8 @@
 
 - name: copy ingress template to the host
   template:
-    src: ingress.yml.j2
+    src: "ingress.yml.j2"
     dest: /tmp/ingress.yml
 
 - name: install ingress
   command: kubectl apply -f /tmp/ingress.yml
-
