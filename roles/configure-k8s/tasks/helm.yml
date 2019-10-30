@@ -5,12 +5,17 @@
     url: https://get.helm.sh/{{ helm_archive }}
     dest: "{{ archives_dir }}/{{ helm_archive }}"
 
-- name: uncompress helm
+- name: uncompress helm archive
   unarchive:
     src: "{{ archives_dir }}/{{ helm_archive }}"
     remote_src: true
-    mode: u+rx
+    dest: "/tmp/"
+
+- name: copy helm
+  copy:
+    src: "/tmp/linux-amd64/helm"
     dest: "~/.local/bin/"
+    mode: u+rx
 
 - name: initialise tiller
   command: helm init --client-only

@@ -31,3 +31,11 @@ helm_version: v2.14.3
 helm_archive: helm-{{ helm_version }}-linux-amd64.tar.gz
 
 ingress_node: minion-0
+
+enable_kubeflow: true
+enable_helm: true
+enable_manila: false
+enable_nfs: false
+enable_ingress: true
+
+ingress: nginx
